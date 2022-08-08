@@ -4,4 +4,4 @@
       { id: 2, author: 'Amanda Doe', text: 'They really know how to make you happy.' },
     ];
 
-    <h1>{{ id }}</h1>
+
