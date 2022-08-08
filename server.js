@@ -22,7 +22,7 @@ app.get('/testimonials', (req, res) => {
 });
 
 app.get('/testimonials/:id', (req, res) => {
-  res.render('db', { layout: false, id: req.params.id })
+  res.send(db[req.params.id-1])
 });
 
 app.get('/testimonials/random', (req, res) => {
