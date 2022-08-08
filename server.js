@@ -7,6 +7,8 @@ const hbs = require('express-handlebars');
       { id: 2, author: 'Amanda Doe', text: 'They really know how to make you happy.' },
 ];
 
+// console.log(Math.floor(Math.random() * db.length));
+
 const app = express();
 
 app.engine('hbs', hbs());
@@ -21,13 +23,15 @@ app.get('/testimonials', (req, res) => {
   res.send(db)
 });
 
+app.get('/testimonials/random', (req, res) => {
+  res.send(db[Math.floor(Math.random() * db.length)]);
+});
+
 app.get('/testimonials/:id', (req, res) => {
   res.send(db[req.params.id-1])
 });
 
-app.get('/testimonials/random', (req, res) => {
-  res.render('db', { layout: false })
-});
+
 
 app.post('/testimonials', (req, res) => {
   res.render('db', { layout: false })
