@@ -10,7 +10,6 @@ const uuid = require('uuid').v4;
       { id: 4, author: 'Sean Doe', text: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit.' },
 ];
 
-console.log(db[1].author);
 
 const app = express();
 
@@ -39,7 +38,7 @@ app.post('/testimonials', (req, res) => {
   const id = uuid();
   const newTestimonials = { id, author, text };
   db.push(newTestimonials);
-  res.json({ message: 'ok' });
+  res.json({ message: 'OK' });
 });
 
 app.put('/testimonials/:id', (req, res) => {
@@ -48,18 +47,18 @@ app.put('/testimonials/:id', (req, res) => {
   const testimonial = db[id];
   testimonial.author = author;
   testimonial.text = text;
-  res.json({ message: 'ok!' });
+  res.json({ message: 'OK' });
 });
 
 app.delete('/testimonials/:id', (req, res) => {
   const id = req.params.id-1;
-  console.log('id', db[id]);
   db.splice(db[id], 1);
-  res.json({ message: 'ok!' });
+  res.json({ message: 'OK' });
+
 });
 
 app.use((req, res) => {
-  res.status(404).send('404 not found...');
+  res.status(404).json('404 not found...');
 })
 
 
