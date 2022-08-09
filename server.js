@@ -1,13 +1,12 @@
 const express = require('express');
 const path = require('path');
 const hbs = require('express-handlebars');
+const uuid = require('uuid').v4;
 
     const db = [
       { id: 1, author: 'John Doe', text: 'This company is worth every coin!' },
       { id: 2, author: 'Amanda Doe', text: 'They really know how to make you happy.' },
 ];
-
-// console.log(Math.floor(Math.random() * db.length));
 
 const app = express();
 
@@ -20,21 +19,23 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 app.get('/testimonials', (req, res) => {
-  res.send(db)
+  res.json(db)
 });
 
 app.get('/testimonials/random', (req, res) => {
-  res.send(db[Math.floor(Math.random() * db.length)]);
+  res.json(db[Math.floor(Math.random() * db.length)]);
 });
 
 app.get('/testimonials/:id', (req, res) => {
-  res.send(db[req.params.id-1])
+  res.json(db[req.params.id-1])
 });
 
-
-
 app.post('/testimonials', (req, res) => {
-  res.render('db', { layout: false })
+  const { author, text } = req.body;
+  const id = uuid();
+  const newTestimonials = { id, author, text };
+  db.push(newTestimonials);
+  res.json({ message: 'ok' });
 });
 
 app.put('/testimonials/:id', (req, res) => {
