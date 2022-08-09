@@ -6,6 +6,8 @@ const uuid = require('uuid').v4;
     const db = [
       { id: 1, author: 'John Doe', text: 'This company is worth every coin!' },
       { id: 2, author: 'Amanda Doe', text: 'They really know how to make you happy.' },
+      { id: 3, author: 'Paul Doe', text: 'Vel blanditiis hic tempora ab culpa.' },
+      { id: 4, author: 'Sean Doe', text: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit.' },
 ];
 
 console.log(db[1].author);
@@ -50,7 +52,10 @@ app.put('/testimonials/:id', (req, res) => {
 });
 
 app.delete('/testimonials/:id', (req, res) => {
-  res.render('db', { layout: false, id: req.params.id })
+  const id = req.params.id-1;
+  console.log('id', db[id]);
+  db.splice(db[id], 1);
+  res.json({ message: 'ok!' });
 });
 
 app.use((req, res) => {
