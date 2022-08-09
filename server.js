@@ -8,6 +8,8 @@ const uuid = require('uuid').v4;
       { id: 2, author: 'Amanda Doe', text: 'They really know how to make you happy.' },
 ];
 
+console.log(db[1].author);
+
 const app = express();
 
 app.engine('hbs', hbs());
@@ -39,7 +41,12 @@ app.post('/testimonials', (req, res) => {
 });
 
 app.put('/testimonials/:id', (req, res) => {
-  res.render('db', { layout: false, id: req.params.id })
+  const { author, text } = req.body;
+  const id = req.params.id-1;
+  const testimonial = db[id];
+  testimonial.author = author;
+  testimonial.text = text;
+  res.json({ message: 'ok!' });
 });
 
 app.delete('/testimonials/:id', (req, res) => {
