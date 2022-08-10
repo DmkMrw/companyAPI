@@ -1,7 +1,7 @@
 import { Button, Form, FormGroup, Label, Input, Row, Col, Alert, Progress } from 'reactstrap';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addSeatRequest, getRequests } from '../../../redux/seatsRedux';
+import { addSeatRequest, getRequests, loadSeats, loadSeatsRequest } from '../../../redux/seatsRedux';
 
 import './OrderTicketForm.scss';
 import SeatChooser from './../SeatChooser/SeatChooser';
@@ -11,12 +11,23 @@ const OrderTicketForm = () => {
   const requests = useSelector(getRequests);
   console.log(requests);
 
+  //update seats every 2 mins
+  const delay = 120000;
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      dispatch(loadSeatsRequest());
+    }, delay);
+    return () => clearInterval(interval);
+  }, []);
+
   const [order, setOrder] = useState({
     client: '',
     email: '',
     day: 1,
     seat: ''
   });
+
   const [isError, setIsError] = useState(false);
 
   const updateSeat = (e, seatId) => {
@@ -38,7 +49,8 @@ const OrderTicketForm = () => {
     e.preventDefault();
 
     if(order.client && order.email && order.day && order.seat) {
-      dispatch(addSeatRequest(order));
+      await dispatch(addSeatRequest(order));
+      dispatch(loadSeatsRequest());
       setOrder({
         client: '',
         email: '',
@@ -84,9 +96,9 @@ const OrderTicketForm = () => {
           <Button color="primary" className="mt-3">Submit</Button>
         </Col>
         <Col xs="12" md="6">
-          <SeatChooser 
+          <SeatChooser
             chosenDay={order.day}
-            chosenSeat={order.seat} 
+            chosenSeat={order.seat}
             updateSeat={updateSeat} />
         </Col>
       </Row>
