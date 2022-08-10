@@ -1,21 +1,16 @@
 const express = require('express');
 const path = require('path');
-const hbs = require('express-handlebars');
 const uuid = require('uuid').v4;
 const cors = require('cors');
 const db = require('./db')
 
 //import routes
-const testimonialRoutes = require('./routes/testimonials.routes.js')
+const testimonialRoutes = require('./routes/testimonials.routes')
+const concertRoutes = require('./routes/concerts.routes')
 
 
 const app = express();
 
-app.engine('hbs', hbs());
-
-app.set('view engine', '.hbs');
-
-const concerts = db.concerts;
 const seats = db.seats;
 
 app.use(express.urlencoded({ extended: false }));
@@ -23,42 +18,10 @@ app.use(express.json());
 app.use(cors());
 
 app.use('/api/', testimonialRoutes);
+app.use('/api', concertRoutes);
 
 
-// CONCERTS
-app.get('/concerts', (req, res) => {
-  res.json(concerts)
-});
 
-app.get('/concerts/:id', (req, res) => {
-  res.json(concerts[req.params.id-1])
-});
-
-app.post('/concerts', (req, res) => {
-  const { performer, genre, price, day, image } = req.body;
-  const id = uuid();
-  const newConcert = { id, performer, genre, price, day, image };
-  concerts.push(newConcert);
-  res.json({ message: 'OK' });
-});
-
-app.delete('/concerts/:id', (req, res) => {
-  const id = req.params.id-1;
-  testimonials.splice(concerts[id], 1);
-  res.json({ message: 'OK' });
-});
-
-app.put('/concerts/:id', (req, res) => {
-  const { performer, genre, price, day, image } = req.body;
-  const id = req.params.id-1;
-  const concert = concerts[id];
-  concert.performer = performer;
-  concert.genre = genre;
-  concert.price = price;
-  concert.day = day;
-  concert.image = image;
-  res.json({ message: 'OK' });
-});
 
 // SEATS
 app.get('/seats', (req, res) => {
