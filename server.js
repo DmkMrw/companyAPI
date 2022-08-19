@@ -2,8 +2,9 @@ const express = require('express');
 const path = require('path');
 const uuid = require('uuid').v4;
 const cors = require('cors');
-const db = require('./db');
+// const db = require('./db');
 const socket = require('socket.io');
+const mongoose = require('mongoose');
 
 
 //import routes
@@ -26,6 +27,15 @@ app.use((req, res, next) => {
 app.use('/api/', testimonialRoutes);
 app.use('/api', concertRoutes);
 app.use('/api', seatsRoutes);
+
+// connects our backend code with the database
+mongoose.connect('mongodb://localhost:27017/NewWaveDB', { useNewUrlParser: true });
+const db = mongoose.connection;
+
+db.once('open', () => {
+  console.log('Connected to the database');
+});
+db.on('error', err => console.log('Error ' + err));
 
 
 const server = app.listen(process.env.PORT || 8000, () => {
