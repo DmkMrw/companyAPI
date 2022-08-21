@@ -5,11 +5,11 @@ const Seat = require('../models/seat.model');
 const SeatsController = require('../controllers/seats.controller');
 // SEATS
 
-router.get('/seats', TestimonialController.getAll);
-router.get('/seats/:id', TestimonialController.getId);
-router.post('/seats/', TestimonialController.post);
-router.put('/seats/:id', TestimonialController.put);
-router.delete('/seats/:id', TestimonialController.delete);
+router.get('/seats', SeatsController.getAll);
+router.get('/seats/:id', SeatsController.getId);
+router.post('/seats/', SeatsController.post);
+router.put('/seats/:id', SeatsController.put);
+router.delete('/seats/:id', SeatsController.delete);
 
 
 
