@@ -30,6 +30,14 @@ app.use('/api/', testimonialRoutes);
 app.use('/api', concertRoutes);
 app.use('/api', seatsRoutes);
 
+const NODE_ENV = process.env.NODE_ENV;
+let dbUri = '';
+
+if (NODE_ENV === 'production') dbUri = 'url to remote db';
+else if (NODE_ENV === 'test') dbUri = 'mongodb://localhost:27017/newWaveDBtest';
+else dbUri = 'mongodb://localhost:27017/newWaveDB';
+
+
 // connects our backend code with the database
 mongoose.connect(uri, { useNewUrlParser: true , useUnifiedTopology: true});
 const db = mongoose.connection;
@@ -43,6 +51,8 @@ db.on('error', err => console.log('Error ' + err));
 const server = app.listen(process.env.PORT || 8000, () => {
   console.log('Server is running on port: 8000');
 });
+
+module.exports = server;
 
 const io = socket(server);
 
