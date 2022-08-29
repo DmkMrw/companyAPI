@@ -1,8 +1,8 @@
 import Concert from './../Concert/Concert';
 
-const Concerts = ({ concerts }) => (
+const Concerts = ({ concerts ,count}) => (
   <section>
-    {concerts.map(con => <Concert key={con._id} {...con} />)}
+    {concerts.map(con => <Concert key={con._id} {...con} count={count} />)}
   </section>
 )
 

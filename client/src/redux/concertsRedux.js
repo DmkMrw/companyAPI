@@ -3,6 +3,7 @@ import { API_URL } from '../config';
 
 /* SELECTORS */
 export const getConcerts = ({ concerts }) => concerts.data;
+export const getFreeSeats = ({ concerts }) => concerts.count;
 export const getRequest = ({ concerts }) => concerts.request;
 
 /* ACTIONS */
@@ -16,12 +17,14 @@ const END_REQUEST = createActionName('END_REQUEST');
 const ERROR_REQUEST = createActionName('ERROR_REQUEST');
 
 const LOAD_CONCERTS = createActionName('LOAD_CONCERTS');
+const LOAD_FREE_SEATS = createActionName('LOAD_FREE_SEATS');
 
 export const startRequest = () => ({ type: START_REQUEST });
 export const endRequest = () => ({ type: END_REQUEST });
 export const errorRequest = error => ({ error, type: ERROR_REQUEST });
 
 export const loadConcerts = payload => ({ payload, type: LOAD_CONCERTS });
+export const loadFreeSeats = payload => ({ payload, type: LOAD_FREE_SEATS });
 
 /* THUNKS */
 
@@ -32,7 +35,7 @@ export const loadConcertsRequest = () => {
     try {
 
       let res = await axios.get(`${API_URL}/concerts`);
-      dispatch(loadConcerts(res.data));
+      dispatch(loadConcerts(res.data.concerts));
       dispatch(endRequest());
 
     } catch(e) {
@@ -42,10 +45,28 @@ export const loadConcertsRequest = () => {
   };
 };
 
+export const loadFreeSeatsRequest = () => {
+  return async dispatch => {
+
+    dispatch(startRequest());
+    try {
+
+      let res = await axios.get(`${API_URL}/concerts`);
+      console.log('data', res.data.count);
+      dispatch(loadFreeSeats(res.data.count));
+      dispatch(endRequest());
+
+    } catch(e) {
+      dispatch(errorRequest(e.message));
+    }
+
+  };
+};
 /* INITIAL STATE */
 
 const initialState = {
   data: [],
+  count: 0,
   request: {
     pending: false,
     error: null,
@@ -59,6 +80,8 @@ export default function reducer(statePart = initialState, action = {}) {
   switch (action.type) {
     case LOAD_CONCERTS:
       return { ...statePart, data: [...action.payload] };
+    case LOAD_FREE_SEATS:
+  return { ...statePart, count: action.payload};
     case START_REQUEST:
       return { ...statePart, request: { pending: true, error: null, success: false } };
     case END_REQUEST:

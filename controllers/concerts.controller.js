@@ -1,9 +1,17 @@
 const Concert = require('../models/concert.model');
+const Seat = require('../models/seat.model');
 
 exports.getAll = async (req, res) => {
 
   try {
-    res.json(await Concert.find());
+    // res.json(await Concert.find());
+    const seats = await Seat.find();
+    let concerts = await Concert.find();
+
+    res.json({
+      concerts: concerts,
+      count: 50-seats.length,
+    });
   }
   catch (err) {
     res.status(500).json({ message: err });
