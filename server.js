@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const uuid = require('uuid').v4;
 const cors = require('cors');
-// const db = require('./db');
+const helmet = require('helmet');
 const socket = require('socket.io');
 const mongoose = require('mongoose');
 
@@ -18,6 +18,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '/client/build')))
 app.use(cors());
+app.use(helmet());
 
 app.use((req, res, next) => {
   req.io = io;
