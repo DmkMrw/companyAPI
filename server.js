@@ -32,7 +32,7 @@ app.use('/api', seatsRoutes);
 const NODE_ENV = process.env.NODE_ENV;
 let dbUri = '';
 
-if (NODE_ENV === 'production') dbUri = process.env.DB_URL;
+if (NODE_ENV === 'production') dbUri = 'mongodb+srv://adminDm:MongoTest123@cluster0.2xychum.mongodb.net/NewWaveDB'
 else if (NODE_ENV === 'test') dbUri = 'mongodb://localhost:27017/NewWaveDBtest';
 else dbUri = 'mongodb://localhost:27017/NewWaveDB';
 
