@@ -1,0 +1,17 @@
+const express = require('express');
+const router = express.Router();
+const Seat = require('../models/seat.model');
+
+const SeatsController = require('../controllers/seats.controller');
+// SEATS
+
+router.get('/seats', SeatsController.getAll);
+router.get('/seats/:id', SeatsController.getId);
+router.post('/seats/', SeatsController.post);
+router.put('/seats/:id', SeatsController.put);
+router.delete('/seats/:id', SeatsController.delete);
+
+
+
+
+module.exports = router;
